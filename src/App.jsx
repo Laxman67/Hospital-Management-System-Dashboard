@@ -8,10 +8,31 @@ import Sidebar from './components/Sidebar';
 import Messages from './components/Messages';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Context } from './main';
+import axios from 'axios';
 export const App = () => {
-  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext();
+  const { isAuthenticated, user, setIsAuthenticated, setUser } =
+    useContext(Context);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/admin/me`,
+          {
+            withCredentials: true,
+          }
+        );
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser({});
+      }
+    };
+    fetchUser();
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -30,3 +51,5 @@ export const App = () => {
     </>
   );
 };
+
+export default App;
