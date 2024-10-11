@@ -11,7 +11,7 @@ const Doctors = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/user/doctors',
+          `${import.meta.env.VITE_BACKEND_URL}/user/doctors`,
           { withCredentials: true }
         );
         setDoctors(data.doctors);
